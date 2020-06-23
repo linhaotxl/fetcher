@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script type="module">
+        import { createFetcher } from '../dist/index.js'
+        const fetcher = createFetcher({
+            baseUrl: 'http://localhost:3030'
+        });
+
+        let count = 0;
+        const startMiddle = async ( context, next ) => {
+            if ( count === 0 ) {
+                console.log( 'show loading...' );
+            }
+            count++;
+
+            return await next();
+        }
+
+        const endMiddle = async ( context, next ) => {
+            await next();
+
+            count--;
+            if ( count === 0 ) {
+                console.log( 'hide loading...' );
+            }
+        }
+
+        fetcher.use([ startMiddle, endMiddle ]);
+
+        // debugger
+        fetcher.fetch( `/app/postDelayThreeSecond`, {
+            method: 'POST',
+            body: { name: 'Nicholas1' },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(console.log)
+        fetcher.fetch( `/app/postDelayOneSecond`, {
+            method: 'POST',
+            body: { name: 'Nicholas2' },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(console.log)
+    </script>
+
+</body>
+</html>

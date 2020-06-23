@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button id="cancel-btn">cancel fetch</button>
+    
+    <script type="module">
+        import { createFetcher } from '../dist/index.js'
+        const fetcher = createFetcher({
+            baseUrl: 'http://localhost:3030'
+        });
+
+        // debugger
+        /** 1. get 请求 返回结果为 文本 */
+        // fetcher.fetch( `/app/getTextDemo?id=${1}`, {
+        //     dataType: 'text'
+        // })
+        // .then(console.log)
+        
+        // /** 2. get 请求 返回结果为 json 对象 */
+        // fetcher.fetch( `/app/getJSONDemo?id=${2}` )
+        // .then(console.log)
+
+        // /** 3. get 请求携带 headers */
+        // fetcher.fetch( `/app/getJSONDemo?id=${3}`, {
+        //     headers: {
+        //         test: 'xxx'
+        //     }
+        // })
+        // .then(console.log)
+
+        // /** 4. get 请求携带 cookie */
+        // fetcher.fetch( `/app/getJSONDemo?id=${4}`, {
+        //     credentials: 'include'
+        // })
+
+        // /** 5. post 请求 application/json */
+        // fetcher.fetch( '/app/postJSONDemo', {
+        //     body: { name: 'IconMan5' },
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // })
+        // .then(console.log)
+
+        // /** 6. post 请求 application/x-www-form-urlencoded */
+        // fetcher.fetch( '/app/postFormJSONDemo', {
+        //     body: { name: 'IconMan6' },
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/x-www-form-urlencoded'
+        //     }
+        // })
+        // .then(console.log)
+
+        // /** 7. post 请求 application/json 额外 header */
+        // fetcher.fetch( '/app/postFormJSONDemo', {
+        //     body: { name: 'IconMan7' },
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         test: 'XXX'
+        //     }
+        // })
+        // .then(console.log)
+
+        // /** 8. 接口返回错误 */
+        // fetcher.fetch( '/app/postErrorDemo', {
+        //     body: { name: 'IconMan3' },
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     dataType: 'text'
+        // })
+        // .then( data => {
+        //     console.log( 'success -> ', data )
+        // })
+        // .catch( err => {
+        //     console.log( 'error -> ', err )
+        // });
+
+        /** 9. signal */
+        const controller = new AbortController();
+        const signal = controller.signal;
+        document.getElementById( 'cancel-btn' ).addEventListener('click', () => {
+            controller.abort();
+        });
+
+        fetcher.fetch( `/app/postDelayThreeSecond`, {
+            method: 'POST',
+            body: { name: 'Nicholas2' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            signal
+        })
+        .then(console.log)
+        .catch( e => {
+            console.log(e)
+        })
+         
+    </script>
+
+</body>
+</html>

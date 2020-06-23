@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #img {
+            width: 100px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <img src="" alt="" id="img">
+    <button class="btn">fetch img</button>
+    
+    <script type="module">
+        import { createFetcher } from '../dist/index.js'
+        const fetcher = createFetcher({
+            baseUrl: 'http://localhost:3030'
+        });
+
+        document.querySelector( '.btn' ).addEventListener( 'click', function () {
+            console.log(2)
+            const f = createFetcher({});
+            f.fetch( 'https://cube.elemecdn.com/e/ee/df43e7e53f6e1346c3fda0609f1d3png.png?x-oss-process=image/format,webp/resize,w_282,h_188,m_fixed', {
+                dataType: 'blob'
+            })
+            .then( res => {
+                const f = new FileReader();
+                f.onload = function ( e ) {
+                    document.querySelector( '#img' ).src = e.target.result;
+                }
+                f.readAsDataURL( res );
+            })
+        })
+        
+    </script>
+
+</body>
+</html>
